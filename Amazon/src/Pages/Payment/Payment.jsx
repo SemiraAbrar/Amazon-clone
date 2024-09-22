@@ -1,29 +1,75 @@
-import React, { useContext,useState } from "react";
+import React, { useContext, useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import classes from "./Payment.module.css";
 import Layout from "../../Components/Layout/Layout";
 import { DataContext } from "../../Components/DataProvider/DataProvider";
 import ProductCard from "../../Components/Product/ProductCard";
 import CurrencyFormat from "../../Components/CurrencyFormat/CurrencyFormat";
+import { axiosInstance } from "../../Api/axios";
+import { ClipLoader } from "react-spinners";
+import { db } from "../../Utility/Firebase";
+import { useNavigate } from "react-router-dom";
+
 function Payment() {
   const [{ basket, user }] = useContext(DataContext);
-    const totalPrice = basket.reduce(
-      (amount, item) => item.price * item.amount + amount,
-      0
-    );
+  const totalPrice = basket.reduce(
+    (amount, item) => item.price * item.amount + amount,
+    0
+  );
   const totalItem = basket?.reduce((amount, item) => item.amount + amount, 0);
   const stripe = useStripe();
   const elements = useElements();
-  const [cardError,setCardError]=useState(null);
-  const handleChange=(e)=>{
+  const navigate=useNavigate();
+  const [cardError, setCardError] = useState(null);
+  const [processing, setProcessing] = useState(false);
+  const handleChange = (e) => {
     console.log(e);
-    e?.error?.message?setCardError(e?.error?.message):setCardError("")
+    e?.error?.message ? setCardError(e?.error?.message) : setCardError("");
+  };
+  const handlePayment = async (e) => {
+    e.preventDefault();
+    try {
+      setProcessing(true);
+      //1,backend :-contact to the client secret
+      const response = await axiosInstance({
+        method: "POST",
+        url: `/payment/create?total=${totalPrice * 100}`,
+      });
+      // console.log(response.data);
+      const clientSecret = response.data?.client_secret;
+      //2,client side(react side confirmation)
+      const { paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      });
+      //console.log(confirmation);
+      console.log(paymentIntent);
+      console.log(user);
+      //3,after the confirmation:- order db save,clear basket
+      await db
+        .collection("users")
+        .doc(user.uid)
+        .collection("orders")
+        .doc(paymentIntent.id)
+        .set({
+          basket: basket,
+          amount: paymentIntent.amount,
+          created: paymentIntent.created,
+        });
+
+      setProcessing(false);
+      navigate("/orders",{state:{msg:"you have placed new order"}});
+    } catch (error) {
+      console.log(error);
+      setProcessing(false);
+    }
   };
   return (
     <Layout>
       <div className={classes.payment__header}>Checkout({totalItem}) items</div>
       <section className={classes.Payment}>
-        {/* adress */}
+        {/* address */}
         <div className={classes.flex}>
           <h3>Delivery Address</h3>
           <div>
@@ -48,7 +94,7 @@ function Payment() {
           <h3>payment methods</h3>
           <div className={classes.payment_card_container}>
             <div className={classes.payment__details}>
-              <form action="">
+              <form onSubmit={handlePayment}>
                 {/* error */}
                 {cardError && (
                   <small style={{ color: "red" }}>{cardError}</small>
@@ -57,12 +103,21 @@ function Payment() {
                 {/* price */}
                 <div className={classes.payment__price}>
                   <div>
-                    <span style={{display:"flex",gap:"10px"}}>
+                    <span style={{ display: "flex", gap: "10px" }}>
                       <p>Total Order |</p>
                       <CurrencyFormat amount={totalPrice} />
                     </span>
                   </div>
-                  <button>Pay Now</button>
+                  <button type="submit">
+                    {processing ? (
+                      <div className={classes.loading}>
+                        <ClipLoader color="gray" size={12} />
+                        <p>please wait ...</p>
+                      </div>
+                    ) : (
+                      "Pay Now"
+                    )}
+                  </button>
                 </div>
               </form>
             </div>
