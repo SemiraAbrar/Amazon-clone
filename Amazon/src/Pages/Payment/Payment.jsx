@@ -6,12 +6,13 @@ import { DataContext } from "../../Components/DataProvider/DataProvider";
 import ProductCard from "../../Components/Product/ProductCard";
 import CurrencyFormat from "../../Components/CurrencyFormat/CurrencyFormat";
 import { axiosInstance } from "../../Api/axios";
+import { Type } from "../../Utility/actiontype";
 import { ClipLoader } from "react-spinners";
 import { db } from "../../Utility/Firebase";
 import { useNavigate } from "react-router-dom";
 
 function Payment() {
-  const [{ basket, user }] = useContext(DataContext);
+  const [{ basket, user}, dispatch ] = useContext(DataContext);
   const totalPrice = basket.reduce(
     (amount, item) => item.price * item.amount + amount,
     0
@@ -19,7 +20,7 @@ function Payment() {
   const totalItem = basket?.reduce((amount, item) => item.amount + amount, 0);
   const stripe = useStripe();
   const elements = useElements();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [cardError, setCardError] = useState(null);
   const [processing, setProcessing] = useState(false);
   const handleChange = (e) => {
@@ -57,9 +58,10 @@ function Payment() {
           amount: paymentIntent.amount,
           created: paymentIntent.created,
         });
-
+      // empty the basket
+      dispatch({ type: Type.EMPTY_BASKET });
       setProcessing(false);
-      navigate("/orders",{state:{msg:"you have placed new order"}});
+      navigate("/orders", { state: { msg: "you have placed new order" } });
     } catch (error) {
       console.log(error);
       setProcessing(false);

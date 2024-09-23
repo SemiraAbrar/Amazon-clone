@@ -36,9 +36,9 @@
   
     margin: 2% auto;
     display: grid;
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     place-items: center;
-    width: 80%;
+    width: 90%;
     gap:20px;
 }
 .product__flexed {
@@ -87,14 +87,14 @@
     display: flex;
     flex-direction: column;
   }
-  .products_container{
+  /* .products_container{
     margin: 2% auto;
     display: grid;
     grid-template-columns: repeat(2,1fr);
     place-items: center;
     width: 80%;
     gap:10px;
-  }
+  } */
   .title{
     /* margin-top: 20px; */
     font-size: 2vw;
@@ -106,7 +106,7 @@
 
 }
 @media ((min-width:769px) and (max-width:980px)){
-   .products_container{
+   /* .products_container{
       margin: 2% auto;
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -114,7 +114,7 @@
     width: 80%;
     gap:10px;
 
-}
+} */
   .title{
     /* margin-top: 20px; */
     font-size: 1.5vw;

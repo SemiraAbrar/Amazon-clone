@@ -1,14 +1,14 @@
 import React from 'react'
 import classes from './Category.module.css'
 function CategoryCard({data}) {
+  console.log(data);
   return (
     <div className={classes.category}>
-      <a href="">
+      <a href="https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png">
         <span>
           <h3 className={classes.title}>{data.name}</h3>
         </span>
         <div className="">
-        
           <div className={`${classes.imgs}`}>
             <div>
               {" "}
@@ -25,12 +25,12 @@ function CategoryCard({data}) {
             <div>
               {" "}
               <img src={data.imgLink.l3} alt="" />
-              <h5 >{data.itemName.l3}</h5>
+              <h5>{data.itemName.l3}</h5>
             </div>
             <div>
               {" "}
               <img src={data.imgLink.l4} alt="" />
-              <h5 >{data.itemName.l4}</h5>
+              <h5>{data.itemName.l4}</h5>
             </div>
           </div>
 

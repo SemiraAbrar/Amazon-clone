@@ -1,0 +1,32 @@
+.back_to_top {
+  background-color: #37475a;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  /* height: 300px; */
+}
+.back_to_top a {
+  color: #fff;
+  text-decoration: none;
+}
+.upper_wrapper{
+ background-color: #232f3e;
+ color: #fff;
+}
+.upper_link {
+  display: flex;
+  width: 75%;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding-top: 30px;
+}
+.upper_link li{
+    list-style: none;
+    font-size: 14px;
+    font-weight: lighter;
+    color:#dddddd;
+    line-height: 17px;
+    padding: 5px 0;
+    cursor: pointer;
+    
+}

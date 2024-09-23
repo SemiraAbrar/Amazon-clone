@@ -1,6 +1,6 @@
 export const categoryInfo = [
   {
-    title: "Electronics",
+    category: "groceries",
     name: "Gaming accessories",
     imgLink: {
       l1: "https://images-na.ssl-images-amazon.com/images/G/01/AmazonExports/Fuji/2021/June/Fuji_Quad_Headset_2x._SY232_CB667159060_.jpg",
@@ -16,7 +16,7 @@ export const categoryInfo = [
     },
   },
   {
-    title: "home arrivals",
+    category: "beauty",
     name: "Home arrivals under $50",
     imgLink: {
       l1: "https://images-na.ssl-images-amazon.com/images/G/01/DiscoTec/2024/HomeLifestyle/HomeSummerFlip/Homepage/QuadCards/Home_Flip_Summer_2024_315_HP_NewArrivals_QuadCard_D_01_2x._SY232_CB555960040_.jpg",
@@ -32,7 +32,7 @@ export const categoryInfo = [
     },
   },
   {
-    title: "Fashion",
+    category: "fragrances",
     name: "Shop deals in Fashion",
     imgLink: {
       l1: "https://images-na.ssl-images-amazon.com/images/G/01/AMAZON_FASHION/2022/SITE_FLIPS/SPR_22/GW/DQC/DQC_APR_TBYB_W_BOTTOMS_2x._SY232_CB624172947_.jpg",
@@ -48,7 +48,7 @@ export const categoryInfo = [
     },
   },
   {
-    title: "Space",
+    category: "furniture",
     name: "Refresh your space",
     imgLink: {
       l1: "https://images-na.ssl-images-amazon.com/images/G/01/launchpad/2023/Gateway/January/DesktopQuadCat_372x232_LP-HP_B08MYX5Q2W_01.23._SY232_CB619238939_.jpg",
